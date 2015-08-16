@@ -40,9 +40,9 @@ public:
   	}
 
 
-  void advertisetriggerservice()
+  void advertisetriggerservice(string  camname)
   {
-	  server_trigger_=ch_.advertiseService("trigger_service", &ImageConverter::servtrig,this);
+	  server_trigger_=ch_.advertiseService(camname+"/trigger_service", &ImageConverter::servtrig,this);
   }
   void EmtpyQueue()
   {
@@ -61,7 +61,7 @@ public:
     image_pub_ = it_.advertise("/image_converter/output_video", 1);
 
     cv::namedWindow(OPENCV_WINDOW);
-    advertisetriggerservice();
+    advertisetriggerservice("no_name");
   }
 
   ImageConverter(string topic_name)
@@ -76,7 +76,7 @@ public:
       image_pub_ = it_.advertise("/image_converter/output_video", 1);
 
       cv::namedWindow(OPENCV_WINDOW);
-      advertisetriggerservice();
+      advertisetriggerservice(topic_name);
     }
 
   ~ImageConverter()
