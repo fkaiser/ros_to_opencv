@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   std_msgs
+  std_srvs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -82,10 +83,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES ros_to_opencv
-#  CATKIN_DEPENDS cv_bridge image_transport roscpp sensor_msgs std_msgs
-#  DEPENDS system_lib
+  INCLUDE_DIRS include
+  LIBRARIES ros_to_opencv
+  CATKIN_DEPENDS cv_bridge image_transport roscpp sensor_msgs std_msgs
+  DEPENDS system_lib
 )
 
 ###########
@@ -100,8 +101,17 @@ include_directories(
 )
 
 # Add executable ros_to_opencv
+# Image converter
 add_executable (ros_to_opencv src/image_converter.cpp)
 target_link_libraries (ros_to_opencv  ${catkin_LIBRARIES})
+
+# Image converter
+add_executable (image_on_command src/image_on_command.cpp)
+target_link_libraries (image_on_command ${catkin_LIBRARIES})
+
+# IMU converter
+add_executable (imu_converter src/imu_converter.cpp)
+target_link_libraries (imu_converter  ${catkin_LIBRARIES})
 
 ## Declare a cpp library
 # add_library(ros_to_opencv
@@ -114,6 +124,14 @@ target_link_libraries (ros_to_opencv  ${catkin_LIBRARIES})
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
 # add_dependencies(ros_to_opencv_node ros_to_opencv_generate_messages_cpp)
+
+# dependencies
+add_dependencies(${PROJECT_NAME}
+    ${catkin_EXPORTED_TARGETS}
+    ${PROJECT_NAME}_gencfg
+    ${PROJECT_NAME}_gencpp
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    )
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(ros_to_opencv_node

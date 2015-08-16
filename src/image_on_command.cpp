@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
+#include <std_srvs/Trigger.h>
+#include <ros/callback_queue.h>
 
 using namespace std;
 
@@ -20,31 +22,61 @@ sensor_msgs::Image testimage;
 class ImageConverter
 {
   ros::NodeHandle nh_;
+  ros::NodeHandle ch_;
   image_transport::ImageTransport it_;
   image_transport::Subscriber image_sub_;
   image_transport::Publisher image_pub_;
-  
+  ros::ServiceServer server_trigger_;
+  ros::CallbackQueue trigger_queue_;
+
 public:
-  ImageConverter()
-    : it_(nh_)
+
+  bool servtrig(std_srvs::Trigger::Request &req,std_srvs::Trigger::Response &resp){
+  		resp.success=true;
+  		ros::getGlobalCallbackQueue()->callAvailable(ros::WallDuration(0.0));
+  		ROS_INFO_STREAM("Saved images");
+  		return true;
+
+  	}
+
+
+  void advertisetriggerservice()
   {
+	  server_trigger_=ch_.advertiseService("trigger_service", &ImageConverter::servtrig,this);
+  }
+  void EmtpyQueue()
+  {
+	  trigger_queue_.callOne();
+  }
+
+
+  ImageConverter()
+    : it_(nh_),
+      ch_(nh_, "trigger_node")
+  {
+
     // Subscribe to input video feed and publish output video feed
-    image_sub_ = it_.subscribe("/camera/image_raw", 100,
+    image_sub_ = it_.subscribe("/camera/image_raw", 1,
       &ImageConverter::imageCb, this);
-    image_pub_ = it_.advertise("/image_converter/output_video", 100);
+    image_pub_ = it_.advertise("/image_converter/output_video", 1);
 
     cv::namedWindow(OPENCV_WINDOW);
+    advertisetriggerservice();
   }
 
   ImageConverter(string topic_name)
-      : it_(nh_)
+      : it_(nh_),
+        ch_(nh_, "trigger_node")
     {
+	  ch_.setCallbackQueue(&trigger_queue_);
+
       // Subscribe to input video feed and publish output video feed
-      image_sub_ = it_.subscribe(topic_name, 100,
+      image_sub_ = it_.subscribe(topic_name, 1,
         &ImageConverter::imageCb, this);
-      image_pub_ = it_.advertise("/image_converter/output_video", 100);
+      image_pub_ = it_.advertise("/image_converter/output_video", 1);
 
       cv::namedWindow(OPENCV_WINDOW);
+      advertisetriggerservice();
     }
 
   ~ImageConverter()
@@ -119,7 +151,15 @@ int main(int argc, char** argv)
   ImageConverter ic(topic_name);
   cout<<topic_name<<endl;
 
-	ros::spin();
+  // Define time update rate to call callback function if necessary
+    ros::Rate r(50); //   Number in Hz
+    while( ros::ok())
+    {
+    ic.EmtpyQueue();
+    r.sleep();
+
+    }
 	return 0;
 
 }
+

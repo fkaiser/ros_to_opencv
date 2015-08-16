@@ -1,0 +1,18 @@
+<launch>
+ <!-- Node Settings -->
+    <arg name="lepton_on" default="false"/>
+    <arg name="tamarisk_on" default="false"/>
+    <arg name="bluefox_right_on" default="true"/>
+    <arg name="bluefox_left_on" default="false"/>
+
+<!-- Save on Command Node bluefox right-->
+<node if="$(arg bluefox_right_on)"
+name="bluefox_right_sub" pkg="ros_to_opencv" type="image_on_command" output="screen">
+	<param name="identifier" type="string" value="/mv_25000060/image_raw"/>
+	<param name="direct" type="string" value="/home/fkaiser/Pictures/on_command/bluefox_right/"/>
+	<param name="format" type="string" value=".png"/>
+</node>
+
+
+
+</launch>

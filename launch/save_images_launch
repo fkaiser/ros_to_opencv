@@ -1,0 +1,5 @@
+<launch>
+<node name="Tamarisk_sub" pkg="ros_to_opencv" type="ros_to_opencv" output="screen">
+<param name="identifier" type="string" value="/camera/image_raw"/>
+</node>
+</launch>
