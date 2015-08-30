@@ -54,7 +54,7 @@ public:
     : it_(nh_),
       ch_(nh_, "trigger_node")
   {
-
+	  ch_.setCallbackQueue(&trigger_queue_);
     // Subscribe to input video feed and publish output video feed
     image_sub_ = it_.subscribe("/camera/image_raw", 1,
       &ImageConverter::imageCb, this);

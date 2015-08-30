@@ -8,16 +8,14 @@
 <!-- Save on Command Node bluefox right-->
 <node if="$(arg bluefox_right_on)"
 name="bluefox_right_sub" pkg="ros_to_opencv" type="image_on_command" output="screen">
-	<param name="identifier" type="string" value="/mv_25000060/image_raw"/>
+	<param name="identifier" type="string" value="/mv_25000060/image_requested"/>
 	<param name="direct" type="string" value="/home/fkaiser/Pictures/on_command/bluefox_right/"/>
 	<param name="format" type="string" value=".png"/>
 </node>
-
-
 <!-- Bluefox_left Node -->
 <node if="$(arg bluefox_left_on)"
 name="bluefox_left_sub" pkg="ros_to_opencv" type="image_on_command" output="screen">
-	<param name="identifier" type="string" value="/mv_25000075/image_raw"/>
+	<param name="identifier" type="string" value="/mv_25000075/image_requested"/>
 	<param name="direct" type="string" value="/home/fkaiser/Pictures/on_command/bluefox_left/"/>
 	<param name="format" type="string" value=".png"/>
 </node>
@@ -26,7 +24,7 @@ name="bluefox_left_sub" pkg="ros_to_opencv" type="image_on_command" output="scre
 <!-- Tamarisk Node -->
 <node if="$(arg tamarisk_on)"
 	 name="tamarisk_sub" pkg="ros_to_opencv" type="image_on_command" output="screen">
-	<param name="identifier" type="string" value="/camera/image_raw"/>
+	<param name="identifier" type="string" value="/tamarisk/image_requested"/>
 	<param name="direct" type="string" value="/home/fkaiser/Pictures/on_command/tamarisk/"/>
 	<param name="format" type="string" value=".png"/>
 </node>

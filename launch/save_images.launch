@@ -4,12 +4,13 @@
     <arg name="tamarisk_on" default="true"/>
     <arg name="bluefox_right_on" default="true"/>
     <arg name="bluefox_left_on" default="true"/>
+    <arg name="dir_base" default="/newfs/outdoor_dataset/"/>
 
 <!-- Tamarisk Node -->
 <node if="$(arg tamarisk_on)"
 	 name="tamarisk_sub" pkg="ros_to_opencv" type="ros_to_opencv" output="screen">
 	<param name="identifier" type="string" value="/camera/image_raw"/>
-	<param name="direct" type="string" value="/home/fkaiser/Pictures/tamarisk/"/>
+	<param name="direct" type="string" value="$(arg dir_base)/tamarisk/"/>
 	<param name="format" type="string" value=".png"/>
 </node>
 
@@ -17,7 +18,7 @@
 <node if="$(arg lepton_on)"
 name="lepton_sub" pkg="ros_to_opencv" type="ros_to_opencv" output="screen">
 	<param name="identifier" type="string" value="/IR_data"/>
-	<param name="direct" type="string" value="/home/fkaiser/Pictures/lepton/"/>
+	<param name="direct" type="string" value="$(arg dir_base)/lepton/"/>
 	<param name="format" type="string" value=".jpg"/>
 </node>
 
@@ -25,16 +26,20 @@ name="lepton_sub" pkg="ros_to_opencv" type="ros_to_opencv" output="screen">
 <!-- Bluefox_right Node -->
 <node if="$(arg bluefox_right_on)"
 name="bluefox_right_sub" pkg="ros_to_opencv" type="ros_to_opencv" output="screen">
-	<param name="identifier" type="string" value="/mv_25000060/image_raw"/>
-	<param name="direct" type="string" value="/home/fkaiser/Pictures/bluefox_right/"/>
+  <param name="identifier" type="string" value="/stereo/right/image_raw"/> 
+	<param name="identifier" type="string" value="/mv_25000060/image_raw"/> 
+
+	<param name="direct" type="string" value="$(arg dir_base)/bluefox_right/"/>
 	<param name="format" type="string" value=".png	"/>
 </node>
 
 <!-- Bluefox_left Node -->
 <node if="$(arg bluefox_left_on)"
 name="bluefox_left_sub" pkg="ros_to_opencv" type="ros_to_opencv" output="screen">
-	<param name="identifier" type="string" value="/mv_25000075/image_raw"/>
-	<param name="direct" type="string" value="/home/fkaiser/Pictures/bluefox_left/"/>
+<param name="identifier" type="string" value="/stereo/left/image_raw"/> 
+ 	<param name="identifier" type="string" value="/mv_25000075/image_raw"/> 
+ 
+	<param name="direct" type="string" value="$(arg dir_base)/bluefox_left/"/>
 	<param name="format" type="string" value=".png"/>
 </node>
 
