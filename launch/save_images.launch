@@ -4,7 +4,7 @@
     <arg name="tamarisk_on" default="true"/>
     <arg name="bluefox_right_on" default="true"/>
     <arg name="bluefox_left_on" default="true"/>
-    <arg name="dir_base" default="/home/fkaiser/Dropbox/wirecutter/indoor_datasets/2015-10-09-19-15-30"/>
+    <arg name="dir_base" default="/newfs/indoor_tests/test1"/>
 
 <!-- Tamarisk Node -->
 <node if="$(arg tamarisk_on)"
